@@ -1,6 +1,4 @@
-@import url(./01-timer.css);
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 *,
 *::before,
@@ -10,4 +8,9 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+}
+
+section {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
