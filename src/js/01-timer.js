@@ -27,6 +27,7 @@ const daysHTML = document.querySelector('span[data-days]'),
 const TIMER_STORAGE_KEY = 'userSelectedDate';
 
 let userSelectedDate, invervalId;
+let isRunning = false;
 
 startBtn.disabled = true;
 resetBtn.disabled = true;
@@ -46,9 +47,12 @@ flatpickr(datePicker, options);
 
 const savedDate = new Date(localStorage.getItem(TIMER_STORAGE_KEY)).getTime();
 
-if (savedDate && savedDate > Date.now()) {
+if (
+  savedDate &&
+  savedDate > Date.now() &&
+  JSON.parse(localStorage.getItem('isRunning'))
+) {
   userSelectedDate = savedDate;
-  startBtn.disabled = false;
   startTimer();
 }
 
@@ -83,6 +87,9 @@ function addZero(unit) {
 }
 
 function startTimer() {
+  isRunning = true;
+  localStorage.setItem('isRunning', isRunning);
+
   datePicker.disabled = true;
   startBtn.disabled = true;
   resetBtn.disabled = false;
@@ -107,6 +114,7 @@ function startTimer() {
 function resetTimer() {
   clearInterval(invervalId);
   localStorage.removeItem(TIMER_STORAGE_KEY);
+  localStorage.removeItem('isRunning');
 
   daysHTML.textContent = '00';
   hoursHTML.textContent = '00';
