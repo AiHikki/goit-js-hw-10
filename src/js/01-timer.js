@@ -6,7 +6,6 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 iziToast.settings({
   timeout: 3000,
-
   transitionIn: 'flipInX',
   transitionOut: 'flipOutX',
   position: 'topRight',
@@ -17,6 +16,7 @@ iziToast.settings({
 });
 
 const startBtn = document.querySelector('button[data-start]'),
+  resetBtn = document.querySelector('button[data-reset]'),
   datePicker = document.querySelector('#datetime-picker');
 
 const daysHTML = document.querySelector('span[data-days]'),
@@ -24,9 +24,12 @@ const daysHTML = document.querySelector('span[data-days]'),
   minutesHTML = document.querySelector('span[data-minutes]'),
   secondsHTML = document.querySelector('span[data-seconds]');
 
+const TIMER_STORAGE_KEY = 'userSelectedDate';
+
 let userSelectedDate, invervalId;
 
 startBtn.disabled = true;
+resetBtn.disabled = true;
 
 const options = {
   enableTime: true,
@@ -34,11 +37,20 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
+    localStorage.setItem(TIMER_STORAGE_KEY, selectedDates[0]);
     handleTimer(selectedDates);
   },
 };
 
 flatpickr(datePicker, options);
+
+const savedDate = new Date(localStorage.getItem(TIMER_STORAGE_KEY)).getTime();
+
+if (savedDate && savedDate > Date.now()) {
+  userSelectedDate = savedDate;
+  startBtn.disabled = false;
+  startTimer();
+}
 
 function handleTimer(selectedDates) {
   userSelectedDate = selectedDates[0].getTime();
@@ -48,25 +60,7 @@ function handleTimer(selectedDates) {
     iziToast.show();
   } else {
     startBtn.disabled = false;
-
-    startBtn.addEventListener('click', () => {
-      datePicker.disabled = true;
-      startBtn.disabled = true;
-
-      invervalId = setInterval(() => {
-        const countDown = userSelectedDate - Date.now();
-        if (countDown <= 0) {
-          clearInterval(invervalId);
-          datePicker.disabled = false;
-          return;
-        }
-        let { days, hours, minutes, seconds } = convertMs(countDown);
-        daysHTML.textContent = addZero(days);
-        hoursHTML.textContent = addZero(hours);
-        minutesHTML.textContent = addZero(minutes);
-        secondsHTML.textContent = addZero(seconds);
-      }, 1000);
-    });
+    startBtn.addEventListener('click', startTimer);
   }
 }
 
@@ -86,4 +80,39 @@ function convertMs(ms) {
 
 function addZero(unit) {
   return unit.toString().padStart(2, '0');
+}
+
+function startTimer() {
+  datePicker.disabled = true;
+  startBtn.disabled = true;
+  resetBtn.disabled = false;
+
+  invervalId = setInterval(() => {
+    const countDown = userSelectedDate - Date.now();
+    if (countDown <= 0) {
+      clearInterval(invervalId);
+      datePicker.disabled = false;
+      return;
+    }
+    let { days, hours, minutes, seconds } = convertMs(countDown);
+    daysHTML.textContent = addZero(days);
+    hoursHTML.textContent = addZero(hours);
+    minutesHTML.textContent = addZero(minutes);
+    secondsHTML.textContent = addZero(seconds);
+  }, 1000);
+
+  resetBtn.addEventListener('click', resetTimer);
+}
+
+function resetTimer() {
+  clearInterval(invervalId);
+  localStorage.removeItem(TIMER_STORAGE_KEY);
+
+  daysHTML.textContent = '00';
+  hoursHTML.textContent = '00';
+  minutesHTML.textContent = '00';
+  secondsHTML.textContent = '00';
+
+  resetBtn.disabled = true;
+  datePicker.disabled = false;
 }
