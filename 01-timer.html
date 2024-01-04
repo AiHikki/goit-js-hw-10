@@ -6,38 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timer</title>
     
-    
     <script type="module" crossorigin src="/goit-js-hw-10/commonHelpers.js"></script>
-    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/style-653cc404.js">
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/modulepreload-polyfill-ec808ebb.js">
     <link rel="modulepreload" crossorigin href="/goit-js-hw-10/assets/vendor-651d7991.js">
-    <link rel="stylesheet" href="/goit-js-hw-10/assets/style-1cb480bd.css">
     <link rel="stylesheet" href="/goit-js-hw-10/assets/vendor-80d0dc0f.css">
-    <link rel="stylesheet" href="/goit-js-hw-10/assets/01-timer-5c00f3da.css">
+    <link rel="stylesheet" href="/goit-js-hw-10/assets/01-timer-e3014269.css">
   </head>
   <body>
     <section>
       <a href="./index.html">Go to home</a>
     </section>
-    <input type="text" id="datetime-picker" />
-    <button type="button" data-start>Start</button>
-    <button type="button" data-reset>Reset</button>
+    <div class="container">
+      <div class="timer">
+        <div class="field">
+          <span class="value" data-days>00</span>
+          <span class="label">Days</span>
+        </div>
+        <div class="field">
+          <span class="value" data-hours>00</span>
+          <span class="label">Hours</span>
+        </div>
+        <div class="field">
+          <span class="value" data-minutes>00</span>
+          <span class="label">Minutes</span>
+        </div>
+        <div class="field">
+          <span class="value" data-seconds>00</span>
+          <span class="label">Seconds</span>
+        </div>
+      </div>
 
-    <div class="timer">
-      <div class="field">
-        <span class="value" data-days>00</span>
-        <span class="label">Days</span>
-      </div>
-      <div class="field">
-        <span class="value" data-hours>00</span>
-        <span class="label">Hours</span>
-      </div>
-      <div class="field">
-        <span class="value" data-minutes>00</span>
-        <span class="label">Minutes</span>
-      </div>
-      <div class="field">
-        <span class="value" data-seconds>00</span>
-        <span class="label">Seconds</span>
+      <div class="timer-tools">
+        <label>
+          <input class="datetime-picker" type="text" id="datetime-picker" />
+        </label>
+        <div class="timer-handler">
+          <button class="start-btn" type="button" data-start>Start</button>
+          <button class="reset-btn" type="button" data-reset>Reset</button>
+        </div>
       </div>
     </div>
 
